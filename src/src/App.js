@@ -9,8 +9,6 @@ function App() {
   const [players, setPlayers] = useState([]);
   const [activePlayers, setActivePlayers] = useState([]);
   const [isStarted, setIsStarted] = useState(false);
-  let [winers, setWiners] = useState([]);
-
   let currentPlayer = {};
   let [queue, setQueue] = useState({});
   const start = () => {
@@ -23,8 +21,6 @@ function App() {
       number: 0,
       steps: 0,
       score: [],
-     
-      avg: 0
     };
 
     if (activePlayers.length === 0) {
@@ -34,28 +30,28 @@ function App() {
       currentPlayer = activePlayers[0];
     }
     setPlayers([...players, gamer]);
-    localStorage.setItem(gamer.name, JSON.stringify(gamer));
+    // let getItem = localStorage.getItem("players");
+
+    // const updatedPlayers = [getItem, gamer];
+
+    // const localStor = JSON.stringify(updatedPlayers);
+
+    // localStorage.setItem("players", localStor);
 
     setActivePlayers([...activePlayers, gamer]);
   };
-  function testLocalStorage() {
-    let name = prompt("הכנס שם משתמש");
-    let localStor = JSON.parse(localStorage.getItem(name));
-    if (localStor) {
-      setActivePlayers((prevActivePlayers) => [
-        ...prevActivePlayers,
-        localStor,
-      ]);
-      if (activePlayers.length === 0) {
-        currentPlayer = localStor;
-        setQueue(currentPlayer);
-      } else {
-        currentPlayer = activePlayers[0];
-      }
-    } else {
-      alert("המשתמש לא קים");
-    }
-  }
+  // function testLocalStorage() {
+  //   let name = prompt("הכנס שם");
+  //   let localStor = [];
+  //   localStorage.getItem("players");
+  //   localStor = JSON.parse(localStor);
+  //   localStor.map((player, index) => {
+  //     let updatedPlayers = player;
+  //     if (updatedPlayers.name === name) {
+  //       setActivePlayers([...activePlayers, updatedPlayers]);
+  //     } else alert("המשתמש לא קים");
+  //   });
+  // }
 
   const upDateQueue = () => {
     index = (index + 1) % activePlayers.length;
@@ -63,23 +59,18 @@ function App() {
     setQueue(currentPlayer);
   };
 
-  const upDateQueue2 = () => {
-    index = (index + 2) % activePlayers.length;
-    currentPlayer = activePlayers[index];
-    setQueue(currentPlayer);
-  };
-
   return (
     <div className="App">
       <div className={style.title}>
-        <Winers winers={winers}setWiners={setWiners} />
+        <Winers />
         <Panel
           addPlayer={addPlayer}
+          // testLocalStorage={testLocalStorage}
           start={start}
-          testLocalStorage={testLocalStorage}
           isStarted={isStarted}
         />
       </div>
+
       <div className={style.container}>
         {activePlayers.map((player, index) => (
           <GameBoard
@@ -90,8 +81,6 @@ function App() {
             isStarted={isStarted}
             upDateQueue={upDateQueue}
             queue={queue}
-            upDateQueue2={upDateQueue2}
-            setWiners={setWiners}
           />
         ))}
       </div>
